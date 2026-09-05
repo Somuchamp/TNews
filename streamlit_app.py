@@ -122,11 +122,11 @@ st.divider()
 
 task = st.radio(
     "Select what to publish:",
-    ["Live Trends (Top 5)", "Upcoming Cricket Matches", "Test/Sample Payload"]
+    ["Live Trends", "Upcoming Cricket Matches", "Test/Sample Payload"]
 )
 
 # Only show these filters if Live Trends is selected
-if task == "Live Trends (Top 5)":
+if task == "Live Trends":
     st.markdown("#### Trend Filters")
     col1, col2 = st.columns(2)
     with col1:
@@ -149,9 +149,14 @@ if task == "Live Trends (Top 5)":
         }
         selected_cat_name = st.selectbox("Category", list(categories.keys()))
         selected_category = categories[selected_cat_name]
+        
+    st.markdown("#### Settings")
+    target_posts = st.slider("Target Number of Articles to Post", min_value=1, max_value=20, value=5, 
+                             help="The pipeline will keep fetching and evaluating trends, skipping irrelevant ones, until it successfully posts this many articles.")
 else:
     selected_geo = "IN"
     selected_category = "all"
+    target_posts = 5
 
 if st.button("🚀 Start Pipeline"):
     st.info("Pipeline is running... Please wait. This may take a few minutes.")
@@ -178,8 +183,8 @@ if st.button("🚀 Start Pipeline"):
     sys.stdout = StreamlitCapture(log_output)
     
     try:
-        if task == "Live Trends (Top 5)":
-            run_live(limit=5, geo=selected_geo, category=selected_category)
+        if task == "Live Trends":
+            run_live(target_posts=target_posts, geo=selected_geo, category=selected_category)
         elif task == "Upcoming Cricket Matches":
             run_upcoming_matches()
         elif task == "Test/Sample Payload":

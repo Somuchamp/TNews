@@ -30,22 +30,32 @@ def run_sample():
     if state.validation_errors:
         print(f"Errors: {state.validation_errors}")
 
-def run_live(limit: int = 5, geo: str = "IN", category: str = "all"):
+def run_live(target_posts: int = 5, geo: str = "IN", category: str = "all"):
     from app.research.collector import fetch_live_trends
+    # Fetch a large batch to ensure we can hit the target even with skips
     packages = fetch_live_trends(geo=geo, category=category, hours=4, limit=100)
     
-    # Optional: Sort by volume or similar logic before truncating, if desired
-    # For now, just take the top 'limit' items that the API returned
-    packages = packages[:limit]
+    print(f"Found {len(packages)} live trends to evaluate.")
     
-    print(f"Found {len(packages)} live trends to process.")
-    
+    successful_posts = 0
     for i, research in enumerate(packages):
-        print(f"\n--- Processing Live Trend {i+1}/{len(packages)}: {research.trend} ---")
+        if successful_posts >= target_posts:
+            print(f"\n✅ Reached target of {target_posts} successful posts. Stopping.")
+            break
+            
+        print(f"\n--- Evaluating Trend {i+1}/{len(packages)}: {research.trend} ---")
         state = process_article(research)
         print(f"Finished {research.trend} with status: {state.status}")
+        
         if state.validation_errors:
             print(f"Errors: {state.validation_errors}")
+            
+        if state.status in ["DRAFT_CREATED", "PUBLISHED"]:
+            successful_posts += 1
+            print(f"Progress: {successful_posts}/{target_posts} successful posts.")
+            
+    if successful_posts < target_posts:
+        print(f"\n⚠️ Ran out of trends before hitting target. Generated {successful_posts}/{target_posts} articles.")
 
 def run_from_file(filepath: str):
     from app.research.collector import parse_trends_json

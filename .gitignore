@@ -1,0 +1,7 @@
+.env
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+tracenews_audit.db
+.DS_Store

@@ -6,37 +6,117 @@ from app.main import run_live, run_upcoming_matches, run_sample
 
 # Configure the Streamlit page
 st.set_page_config(
-    page_title="TraceNews Pipeline",
-    page_icon="📰",
-    layout="centered"
+    page_title="TraceNews Auto",
+    page_icon="⚡",
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
-# Custom CSS to make it look like a mobile app
+# Advanced CSS for a premium, modern "Frontend Developer" look
 st.markdown("""
 <style>
-    .main {
-        max-width: 600px;
-        margin: 0 auto;
+    /* Import Google Font */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+    
+    /* Global Styles */
+    html, body, [class*="css"]  {
+        font-family: 'Outfit', sans-serif !important;
     }
+    
+    /* Hide Streamlit Branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+
+    /* Main Container (Simulating Mobile App Frame) */
+    .block-container {
+        max-width: 650px !important;
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    /* Gradient Title */
+    .title-text {
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        margin-bottom: -10px;
+    }
+    
+    .subtitle-text {
+        text-align: center;
+        color: #888;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+
+    /* Customizing the "Start Pipeline" Button */
     .stButton>button {
         width: 100%;
-        height: 60px;
-        font-size: 20px;
-        font-weight: bold;
-        border-radius: 10px;
-        background-color: #009270;
+        height: 65px;
+        font-size: 22px;
+        font-weight: 700;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        border: none;
+        box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        transition: all 0.3s ease;
+        margin-top: 20px;
+    }
+    
+    /* Button Hover/Active Animations */
+    .stButton>button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(79, 172, 254, 0.4);
+        color: white;
+        border: none;
+    }
+    .stButton>button:active {
+        transform: translateY(1px);
+        box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+    }
+    .stButton>button:focus {
+        box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
         color: white;
     }
-    .stButton>button:hover {
-        background-color: #007a5d;
-        color: white;
+
+    /* Styling the Radio Buttons and Select Boxes */
+    .stRadio > label {
+        font-weight: 600 !important;
+        font-size: 1.2rem !important;
+    }
+    
+    .stSelectbox > label {
+        font-weight: 600 !important;
+    }
+    
+    /* Adding a Glassmorphism Panel effect around inputs */
+    div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] > div[data-testid="stVerticalBlock"] {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Text Area (Logs) Customization */
+    .stTextArea textarea {
+        background-color: #1e1e1e !important;
+        color: #00ff00 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        border-radius: 12px !important;
+        border: 1px solid #333 !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("📰 TraceNews")
-st.subheader("Automated Publishing Pipeline")
-st.write("Tap a button below to trigger the AI pipeline. It will automatically fetch data, generate articles, and publish them to WordPress.")
+st.markdown('<h1 class="title-text">⚡ TraceNews</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle-text">Automated Publishing AI</p>', unsafe_allow_html=True)
 
 st.divider()
 

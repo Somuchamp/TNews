@@ -45,6 +45,34 @@ task = st.radio(
     ["Live Trends (Top 5)", "Upcoming Cricket Matches", "Test/Sample Payload"]
 )
 
+# Only show these filters if Live Trends is selected
+if task == "Live Trends (Top 5)":
+    st.markdown("#### Trend Filters")
+    col1, col2 = st.columns(2)
+    with col1:
+        countries = {
+            "India": "IN", "United States": "US", "United Kingdom": "GB", 
+            "Australia": "AU", "Canada": "CA", "Global": ""
+        }
+        selected_country_name = st.selectbox("Country", list(countries.keys()))
+        selected_geo = countries[selected_country_name]
+        
+    with col2:
+        categories = {
+            "All Categories": "all",
+            "Business": "b",
+            "Entertainment": "e",
+            "Health": "m",
+            "Science/Tech": "t",
+            "Sports": "s",
+            "Top Stories": "h"
+        }
+        selected_cat_name = st.selectbox("Category", list(categories.keys()))
+        selected_category = categories[selected_cat_name]
+else:
+    selected_geo = "IN"
+    selected_category = "all"
+
 if st.button("🚀 Start Pipeline"):
     st.info("Pipeline is running... Please wait. This may take a few minutes.")
     
@@ -71,7 +99,7 @@ if st.button("🚀 Start Pipeline"):
     
     try:
         if task == "Live Trends (Top 5)":
-            run_live(limit=5)
+            run_live(limit=5, geo=selected_geo, category=selected_category)
         elif task == "Upcoming Cricket Matches":
             run_upcoming_matches()
         elif task == "Test/Sample Payload":

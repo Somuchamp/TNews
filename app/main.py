@@ -30,9 +30,9 @@ def run_sample():
     if state.validation_errors:
         print(f"Errors: {state.validation_errors}")
 
-def run_live(limit: int = 5):
+def run_live(limit: int = 5, geo: str = "IN", category: str = "all"):
     from app.research.collector import fetch_live_trends
-    packages = fetch_live_trends(geo="IN", hours=4, limit=100)
+    packages = fetch_live_trends(geo=geo, category=category, hours=4, limit=100)
     
     # Optional: Sort by volume or similar logic before truncating, if desired
     # For now, just take the top 'limit' items that the API returned

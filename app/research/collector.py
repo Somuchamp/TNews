@@ -208,10 +208,12 @@ def parse_trends_json(filepath: str) -> List[ResearchPackage]:
         data = json.load(f)
     return parse_trends_data(data)
 
-def fetch_live_trends(geo: str = "IN", hours: int = 4, limit: int = 100) -> List[ResearchPackage]:
+def fetch_live_trends(geo: str = "IN", category: str = "all", hours: int = 4, limit: int = 100) -> List[ResearchPackage]:
     url = "https://google-trends-api-eight-ashy.vercel.app/api/trends"
     params = {"geo": geo, "hours": hours, "limit": limit}
-    print(f"Fetching live trends from {url}...")
+    if category and category.lower() != "all":
+        params["category"] = category
+    print(f"Fetching live trends from {url} with geo={geo}, category={category}...")
     response = requests.get(url, params=params, timeout=30)
     response.raise_for_status()
     
